@@ -50,7 +50,7 @@ cd convert
 API_URL= Your_Api_url
 API_KEY=Your_Api_Key
 ```
-* Depending upon your client change the `url` structure according to your client, current client: `freecurrencyapi`
+* Depending upon your client change the `url` structure in the service class, current client: `freecurrencyapi`
 ```
  String url = API_URL +"?apikey=" + API_KEY + "&base_currency="+ baseCurrency;
 ```
