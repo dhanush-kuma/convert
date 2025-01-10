@@ -27,7 +27,8 @@ public class currencyController {
     public ResponseEntity<Map<String, Object>> convertCurrency(@RequestBody Map<String, Object> requestBody) {
         String from = (String) requestBody.get("from");
         String to = (String) requestBody.get("to");
-        Double amount = (Double) requestBody.get("amount");
+        Number amountObject = (Number) requestBody.get("amount");
+        Double amount = amountObject != null ? amountObject.doubleValue() : null;
 
         Double convertedAmount = currencyService.convertCurrency(from, to, amount);
 

@@ -6,6 +6,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import io.github.cdimascio.dotenv.Dotenv;
+
+import java.util.HashMap;
 import java.util.Map;
 @Service
 public class currencyConversionService {
@@ -25,7 +27,15 @@ public class currencyConversionService {
         String url = API_URL +"?apikey=" + API_KEY + "&base_currency="+ baseCurrency;
         try {
             ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
-            Map<String, Double> rates =(Map<String, Double>) response.getBody().get("data");
+            Map<String, Object> Data =(Map<String, Object>) response.getBody().get("data");
+            Map<String, Double> rates = new HashMap<>(); //this hm is used for converting objects to double, some value was integer in the response body
+            for (Map.Entry<String, Object> entry : Data.entrySet()) {
+                if (entry.getValue() instanceof Integer) {
+                    rates.put(entry.getKey(), ((Integer) entry.getValue()).doubleValue());
+                } else if (entry.getValue() instanceof Double) {
+                    rates.put(entry.getKey(), (Double) entry.getValue());
+                }
+            }
             System.out.println(rates);
             return rates;
         } catch (HttpClientErrorException | HttpServerErrorException e) {
